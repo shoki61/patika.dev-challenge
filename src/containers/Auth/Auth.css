@@ -1,0 +1,17 @@
+.auth{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 150px;
+}
+
+.auth-title{
+    font-size: 16px;
+    font-weight: 600;
+    margin:5px 0
+}
+
+.auth-form-container{
+    display: flex;
+    flex-direction: column;
+}

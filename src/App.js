@@ -7,13 +7,11 @@ import './App.css';
 
 const App = () => {
   return (
-    <div className="App">
-      <BrowserRouter>
-        <Route path='/auth'>
-          <Auth/>
-        </Route>
-      </BrowserRouter>
-    </div>
+    <BrowserRouter>
+      <Route path='/auth'>
+        <Auth/>
+      </Route>
+    </BrowserRouter>
   );
 };
 
