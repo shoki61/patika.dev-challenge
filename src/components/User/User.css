@@ -1,0 +1,14 @@
+.user{
+    display: flex;
+    align-items: center;
+}
+
+.user-avatar{
+    width: 75px;
+}
+
+.user-name{
+    font-size: 17px;
+    font-weight: 600;
+    color:#414141
+}
