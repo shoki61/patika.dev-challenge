@@ -19,15 +19,15 @@
 }
 
 .card-item{
-    width: 200px;
-    min-height: 250px;
+    width: 300px;
+    min-height: 375px;
 }
 
 .create-card-item{
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-evenly;
 }
 
 .card-title{

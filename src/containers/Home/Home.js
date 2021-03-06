@@ -16,7 +16,7 @@ const Home = props => {
             <Card>
                 <div className='card-item create-card-item'>
                     <p className='card-title'>New Project</p>
-                    <Button className='outline'>Create</Button>
+                    <Button className='outline full-width'>Create</Button>
                 </div>
             </Card>
         </div>
