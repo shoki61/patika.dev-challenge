@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
 
 import User from '../../components/User/User';
@@ -23,4 +24,10 @@ const Home = props => {
     </div>
 };
 
-export default Home;
+const mapStateToProps = state => {
+    return {
+        todos: state.todos
+    };
+};
+
+export default connect(mapStateToProps)(Home);
