@@ -19,8 +19,11 @@
 }
 
 .card-item{
-    width: 300px;
-    min-height: 375px;
+    width: 250px;
+    height: 350px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .create-card-item{
@@ -35,3 +38,34 @@
     font-weight: 600;
     color: #414141
 }
+
+.card-title-input{
+    font-size: 18px;
+    font-weight: 600;
+    border:none;
+    border-bottom: 2px solid grey;
+    border-radius: 0;
+}
+
+.card-item-input{
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.card-add-item-button{
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.todo-items-container{
+    overflow:auto;
+}
+
+.todo-item-container{
+    display: flex;
+    justify-content: space-between;
+    align-items:center;
+    width:100%;
+}
+
+
