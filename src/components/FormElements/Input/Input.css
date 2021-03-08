@@ -13,7 +13,7 @@
     padding-left: 35px;
     cursor: pointer;
     font-weight: 500;
-    color: #616161;
+    color: #494949;
     font-size: 17px;
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -36,8 +36,8 @@
     left: 0;
     height: 25px;
     width: 25px;
-    background-color: rgb(238, 238, 238);
-    border:1px solid #cecece;
+    background-color: rgb(223, 223, 223);
+    border:1px solid #8b8b8b;
     border-radius: 5px;
   }
 

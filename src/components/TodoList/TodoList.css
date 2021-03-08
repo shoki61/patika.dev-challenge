@@ -1,0 +1,38 @@
+.todo-title{
+    font-size: 18px;
+    font-weight: 700;
+    color: #414141;
+    border-bottom: 2px solid #b3b3b3;
+    padding-bottom: 3px;
+}
+
+
+.todo-items-container{
+    overflow:auto;
+}
+ 
+.todo-item-container{
+    display: flex;
+    justify-content: space-between;
+    align-items:center;
+    width:100%;
+}
+
+.overlay{
+    width: 290px;
+    height: 390px;
+    top:0;
+    left:0;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: inherit;
+    background-color: rgba(41, 41, 41, 0.5);
+    position: absolute;
+    padding: 0 50px;
+}
+
+.card:hover .overlay{
+    display: flex;
+}
