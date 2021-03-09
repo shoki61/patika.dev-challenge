@@ -1,5 +1,6 @@
 export {
     addTodo,
     deleteTodo,
-    removeTodoItem
+    removeTodoItem,
+    copyTodo
 } from './todos';

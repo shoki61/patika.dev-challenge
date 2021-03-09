@@ -20,3 +20,10 @@ export const removeTodoItem = id => {
         id
     };
 };
+
+export const copyTodo = id => {
+    return {
+        type: actionTypes.COPY_TODO,
+        id
+    };
+};
