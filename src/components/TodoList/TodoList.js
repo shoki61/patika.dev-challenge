@@ -21,8 +21,8 @@ const TodoList = props => {
                     <Button className='white full-width'>EDIT</Button>
                     <div>
                         <Button className='white m-1'><i className='fa fa-share-square-o'></i></Button>
-                        <Button className='white m-1'><i className='fa fa-copy'></i></Button>
-                        <Button className='white m-1'><i className='fa fa-close'></i></Button>
+                        <Button onClick={props.copy} className='white m-1'><i className='fa fa-copy'></i></Button>
+                        <Button onClick={props.delete} className='white m-1'><i className='fa fa-close'></i></Button>
                     </div>
                 </div>
             </Card>;
