@@ -8,10 +8,11 @@ const Input = props => {
     switch(props.element){
         case 'checkbox': element = <label className="label">{props.label}
             <input
+                checked={props.checked}
                 id={props.id}
                 className={`input ${props.className}`} 
-                type={props.type} 
-                value={props.value} 
+                type={props.type}
+                value={props.value}
                 placeholder={props.placeholder} 
                 onChange={props.onChange}
             />

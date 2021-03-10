@@ -13,7 +13,10 @@ const reducer = (state = initialState, action) => {
             const newTodos = [...state.todos];
             newTodos.unshift(action.todo);
             const newCategories = [...state.categories];
-            newCategories.unshift(action.todo.category);
+            const categoryNames = newCategories.map(item => item.name);
+            if(!categoryNames.includes(action.todo.category)){
+                newCategories.unshift({name: action.todo.category, isSelected: false});
+            };
             return {
                 ...state,
                 categories: newCategories,
@@ -40,7 +43,8 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 todos: newCopiedTodos
-            }
+            };
+
         default: return state;
     };
 };

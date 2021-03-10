@@ -12,8 +12,10 @@ import * as actions from '../../store/actions/index';
 import './Home.css';
 
 const Home = props => {
+    const [ todos, setTodos ] = useState([]);
     const [ newTodo, setNewTodo ] = useState(false);
     const [ category, setCategory ] = useState(true);
+    const [ categories, setCategories ] = useState([]);
     const [ todo, setTodo ] = useState({
         id: uuidv4(),
         title:'',
@@ -21,6 +23,14 @@ const Home = props => {
         item:'',
         items:[]
     });
+
+
+    useEffect(() => {
+        setTodos(props.todos);
+        setCategories(props.categories);
+        console.log('START')
+    }, [props.todos, props.categories, categories]);
+
 
     const addTodo = () => {
         props.onAddTodo(todo);
@@ -93,27 +103,59 @@ const Home = props => {
         props.onCopy(id);
     };
 
+    const getFilteredTodos = (event ,value) => {
+        const updatedCategories = categories.map(item => {
+            if(item.name === value){
+                item.isSelected = !item.isSelected
+                return item;
+            };
+            return item;
+        });
+        setCategories(updatedCategories);
+    };
 
     return <div className='home'>
         <div className='home-left'>
             <User/>
             <div className='categories-container mt-3 m-1'>
-                {props.categories.map(item => 
-                    <p className='mt-1'><Input label={item} element='checkbox' type='checkbox' /></p>
+                
+                {categories.map((item, index) => 
+                    <p key={index} className='mt-1'><Input onChange={(event) => getFilteredTodos(event, item.name)} checked={item.isSelected} value={item.isSelected}  label={item.name} element='checkbox' type='checkbox' /></p>
                 )}
             </div>
         </div>
         <div className='home-right'>
             {
-                props.todos.length > 0 && props.todos.map(item => <TodoList
-                    id={item.id}
-                    key={item.id}
-                    delete={() => deleteTodo(item.id)}
-                    copy={() => copy(item.id)}
-                    title={item.title}
-                    items={item.items}
-                    category={item.category}
-                />)
+                props.todos.length > 0 && props.todos.map(item => {
+                    const test = categories.filter(ctgs => ctgs.isSelected === true);
+                    if(test.length > 0){
+                        let filteredTodos;
+                        test.map(ctg => {
+                            if(ctg.name === item.category){
+                                return filteredTodos = <TodoList
+                                    id={item.id}
+                                    key={item.id}
+                                    delete={() => deleteTodo(item.id)}
+                                    copy={() => copy(item.id)}
+                                    title={item.title}
+                                    items={item.items}
+                                    category={item.category}
+                                />
+                            }
+                        })
+                        return filteredTodos
+                    }else{
+                        return <TodoList
+                        id={item.id}
+                        key={item.id}
+                        delete={() => deleteTodo(item.id)}
+                        copy={() => copy(item.id)}
+                        title={item.title}
+                        items={item.items}
+                        category={item.category}
+                    />
+                    }
+                })
             }
 
             
