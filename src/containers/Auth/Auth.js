@@ -25,7 +25,7 @@ const Auth = props => {
     const login = event => {
         event.preventDefault();
         if(validator.isLength(user.firstName,{ min: 2 }) && validator.isLength(user.lastName,{ min: 2 })){
-            localStorage.setItem('user', user);
+            localStorage.setItem('user', JSON.stringify(user));
             return history.push('/');
         };
         setError(true);
