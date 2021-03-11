@@ -28,7 +28,7 @@ const Home = props => {
 
 
     useEffect(() => {
-        const user = localStorage.getItem('userName');
+        const user = JSON.parse(localStorage.getItem('user'));
         if(!user) {
             return history.push('/auth');
         };
