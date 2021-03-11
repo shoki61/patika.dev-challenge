@@ -15,6 +15,7 @@ import './Home.css';
 const Home = props => {
     const history = useHistory();
     const [ user, setUser ] = useState();
+    const [ todoItem, setTodoItem ] = useState({name: '', status: false});
     const [ newTodo, setNewTodo ] = useState(false);
     const [ category, setCategory ] = useState(true);
     const [ categories, setCategories ] = useState([]);
@@ -22,7 +23,6 @@ const Home = props => {
         id: uuidv4(),
         title:'',
         category:'',
-        item:'',
         items:[]
     });
 
@@ -37,30 +37,28 @@ const Home = props => {
     }, [props.categories, categories]);
 
 
-    const addTodo = () => {
-        props.onAddTodo(todo);
-        setNewTodo(false);
+    const clearData = () => {
         setCategory(true);
         setTodo({
             id: uuidv4(),
             title:'',
             category:'',
-            item:'',
             items:[]
         });
+        setTodoItem({name: '', status: false});
+    }
+
+
+    const addTodo = () => {
+        props.onAddTodo(todo);
+        setNewTodo(false);
+        clearData();
     };
 
     const changeNewTodo = () => {
         setNewTodo(prevState => !prevState);
         if(!newTodo){
-            setCategory(true)
-            setTodo({
-                id: uuidv4(),
-                title:'',
-                category:'',
-                item:'',
-                items:[]
-            })
+            clearData();
         };
     };
 
@@ -73,20 +71,40 @@ const Home = props => {
         });
     };
 
+    const todoItemHandler = event => {
+        setTodoItem(prevState => {
+            return {
+                ...prevState,
+                [event.target.id]: event.target.value
+            }
+        });
+    };
+
+    const changeTodoItemStatus = index => {
+        const items = [...todo.items];
+        items[index].status = !items[index].status;
+        setTodo(prevState => {
+            return {
+                ...prevState,
+                items
+            };
+        });
+    };
+
     const setCategoryHandler = () => {
         if(todo.category.length) setCategory(false);
     };
 
     const addTodoItem = () => {
         let items = todo.items;
-        items.unshift(todo.item);
+        items.unshift(todoItem);
         setTodo(prevState => {
             return {
                 ...prevState,
-                items,
-                item:''
+                items
             };
         });
+        setTodoItem({name: '', status: false})
     };
 
     const removeItem = i => {
@@ -197,11 +215,11 @@ const Home = props => {
                         />
                         <div className='todo-item-container mb-2'>
                             <Input 
-                                onChange={inputHandler} 
-                                id='item' 
+                                onChange={todoItemHandler} 
+                                id='name' 
                                 className='card-item-input full-width' 
                                 element='input' 
-                                value={todo.item} 
+                                value={todoItem.name} 
                                 placeholder='enter todo...'
                             />
                             <Button onClick={addTodoItem} className='card-add-item-button'>Add</Button>
@@ -209,7 +227,16 @@ const Home = props => {
                         <div className='todo-items-container full-width'>
                             { todo.items.map((item, index)=> <div key={index} className='todo-item-container mb-1'>
                                 <div style={{display:'flex', alignItems:'center'}}>
-                                    <Input label={item} element='checkbox' type='checkbox'/>
+                                    <Input 
+                                        label={item.name} 
+                                        checked={item.status} 
+                                        element='checkbox' 
+                                        type='checkbox'
+                                        id='status'
+                                        onChange={() => changeTodoItemStatus(index)} 
+                                        checked={item.status} 
+                                        value={item.status} 
+                                    />
                                 </div>
                                 <Button onClick={() => removeItem(index)}  className='danger'><i className='fa fa-close'></i></Button>
                             </div>)}

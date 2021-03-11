@@ -12,7 +12,14 @@ const TodoList = props => {
                     <div className='todo-items-container full-width'>
                         { props.items.map((item, index)=> <div key={index} className='todo-item-container mb-1'>
                             <div style={{display:'flex', alignItems:'center'}}>
-                                <Input label={item} element='checkbox' type='checkbox'/>
+                                <Input 
+                                    onChange={() => {}}
+                                    label={item.name} 
+                                    value={item.status} 
+                                    checked={item.status} 
+                                    element='checkbox' 
+                                    type='checkbox'
+                                />
                             </div>
                         </div>)}
                     </div>
