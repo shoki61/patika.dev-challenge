@@ -9,31 +9,47 @@ import './Auth.css';
 
 const Auth = props => {
     const history = useHistory();
-    const [ userName, setUserName ] = useState('');
+    const [ user, setUser ] = useState({firstName:'', lastName:''});
     const [ error, setError ] = useState(false);
 
     const inputHandler = event => {
-        setUserName(event.target.value);
+        setUser(prevState => {
+            return{
+                ...prevState,
+                [event.target.id]: event.target.value
+            };
+        });
         if(error) setError(false);
     };
 
     const login = event => {
         event.preventDefault();
-        if(validator.isLength(userName,{ min: 2 })){
-            localStorage.setItem('userName', userName);
-            history.push('/');
-        } else setError(true);
+        if(validator.isLength(user.firstName,{ min: 2 }) && validator.isLength(user.lastName,{ min: 2 })){
+            localStorage.setItem('user', user);
+            return history.push('/');
+        };
+        setError(true);
     };
 
     return <div className='auth'>
         <Card>
             <form onSubmit={login} className='auth-form-container'>
-                <p className='auth-title'>Name</p>
+                <p className='auth-title'>First Name</p>
                 <Input 
-                    value={userName}
+                    id='firstName'
+                    value={user.firstName}
                     onChange={inputHandler} 
                     className='mb-1'
-                    placeholder='enter your full name...' 
+                    placeholder='enter your first name...' 
+                    element='input'
+                />
+                <p className='auth-title'>Last Name</p>
+                <Input 
+                    id='lastName'
+                    value={user.lastName}
+                    onChange={inputHandler} 
+                    className='mb-1'
+                    placeholder='enter your last name...' 
                     element='input'
                 />
                 {error && <p className='error-text mb-1'>Please enter your name</p>}
