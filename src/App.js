@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 
 import Auth from './containers/Auth/Auth';
 import Home from './containers/Home/Home';
@@ -10,12 +10,13 @@ const App = () => {
   return (
     <BrowserRouter>
         <Switch>
+          <Route path='/' exact>
+            <Home/>
+          </Route>
           <Route path='/auth'>
             <Auth/>
           </Route>
-          <Route path='/'>
-            <Home/>
-          </Route>
+          <Redirect to='/'/>
         </Switch>
     </BrowserRouter>
   );

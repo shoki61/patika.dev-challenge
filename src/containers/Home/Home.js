@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 
 
@@ -12,7 +13,8 @@ import * as actions from '../../store/actions/index';
 import './Home.css';
 
 const Home = props => {
-    const [ todos, setTodos ] = useState([]);
+    const history = useHistory();
+    const [ user, setUser ] = useState();
     const [ newTodo, setNewTodo ] = useState(false);
     const [ category, setCategory ] = useState(true);
     const [ categories, setCategories ] = useState([]);
@@ -26,10 +28,13 @@ const Home = props => {
 
 
     useEffect(() => {
-        setTodos(props.todos);
+        const user = localStorage.getItem('userName');
+        if(!user) {
+            return history.push('/auth');
+        };
+        setUser(user);
         setCategories(props.categories);
-        console.log('START')
-    }, [props.todos, props.categories, categories]);
+    }, [props.categories, categories]);
 
 
     const addTodo = () => {
@@ -114,38 +119,14 @@ const Home = props => {
         setCategories(updatedCategories);
     };
 
-    return <div className='home'>
-        <div className='home-left'>
-            <User/>
-            <div className='categories-container mt-3 m-1'>
-                
-                {categories.map((item, index) => 
-                    <p key={index} className='mt-1'><Input onChange={(event) => getFilteredTodos(event, item.name)} checked={item.isSelected} value={item.isSelected}  label={item.name} element='checkbox' type='checkbox' /></p>
-                )}
-            </div>
-        </div>
-        <div className='home-right'>
-            {
-                props.todos.length > 0 && props.todos.map(item => {
-                    const test = categories.filter(ctgs => ctgs.isSelected === true);
-                    if(test.length > 0){
-                        let filteredTodos;
-                        test.map(ctg => {
-                            if(ctg.name === item.category){
-                                return filteredTodos = <TodoList
-                                    id={item.id}
-                                    key={item.id}
-                                    delete={() => deleteTodo(item.id)}
-                                    copy={() => copy(item.id)}
-                                    title={item.title}
-                                    items={item.items}
-                                    category={item.category}
-                                />
-                            }
-                        })
-                        return filteredTodos
-                    }else{
-                        return <TodoList
+
+    const renderTodos = item => {
+        const isSelectedCategory = categories.filter(ctgs => ctgs.isSelected === true);
+        if(isSelectedCategory.length > 0){
+            let filteredTodos;
+            isSelectedCategory.map(ctg => {
+                if(ctg.name === item.category){
+                    filteredTodos = <TodoList
                         id={item.id}
                         key={item.id}
                         delete={() => deleteTodo(item.id)}
@@ -153,27 +134,59 @@ const Home = props => {
                         title={item.title}
                         items={item.items}
                         category={item.category}
-                    />
-                    }
-                })
-            }
+                    />;
+                };
+            });
+            return filteredTodos;
+        }else{
+            return <TodoList
+                id={item.id}
+                key={item.id}
+                delete={() => deleteTodo(item.id)}
+                copy={() => copy(item.id)}
+                title={item.title}
+                items={item.items}
+                category={item.category}
+            />;
+        };
+    };
 
-            
+    return <div className='home'>
+        <div className='home-left'>
+            <User user={user}/>
+            <div className='categories-container mt-3 m-1'>
+                {
+                    categories.map((item, index) => <p key={index} className='mt-1'>
+                        <Input 
+                            onChange={(event) => getFilteredTodos(event, item.name)} 
+                            checked={item.isSelected} 
+                            value={item.isSelected}  
+                            label={item.name} 
+                            element='checkbox' 
+                            type='checkbox' 
+                        />
+                    </p>
+                )}
+            </div>
+        </div>
+        <div className='home-right'>
+            {props.todos.length > 0 && props.todos.map(item => renderTodos(item))}
+
             {
                 newTodo && <Card className='mr-2 mb-2'>
-                <Button onClick={changeNewTodo} className='card-close'><i className='fa fa-close'></i></Button>
-                {category ? <div className='card-item create-card-item'>
-                    <Input
-                        onChange={inputHandler} 
-                        id='category' 
-                        className='full-width' 
-                        element='input' 
-                        value={todo.category} 
-                        placeholder='enter category...' 
-                    />
-                    <Button onClick={setCategoryHandler}>Next</Button>
-                </div> :
-                <div className='card-item'>
+                    <Button onClick={changeNewTodo} className='card-close'><i className='fa fa-close'></i></Button>
+                    {category ? <div className='card-item create-card-item'>
+                        <Input
+                            onChange={inputHandler} 
+                            id='category' 
+                            className='full-width' 
+                            element='input' 
+                            value={todo.category} 
+                            placeholder='enter category...' 
+                        />
+                        <Button onClick={setCategoryHandler}>Next</Button>
+                    </div> :
+                    <div className='card-item'>
                         <Input 
                             onChange={inputHandler} 
                             id='title' 
@@ -201,9 +214,9 @@ const Home = props => {
                                 <Button onClick={() => removeItem(index)}  className='danger'><i className='fa fa-close'></i></Button>
                             </div>)}
                         </div>
-                    {todo.items.length > 0 && <Button onClick={addTodo} className='full-width m-1'>SAVE</Button>}
-                </div>}
-            </Card>
+                        {todo.items.length > 0 && <Button onClick={addTodo} className='full-width m-1'>SAVE</Button>}
+                    </div>}
+                </Card>
             }
 
             <Card>

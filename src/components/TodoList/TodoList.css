@@ -20,20 +20,22 @@
 }
 
 .overlay{
-    width: 290px;
-    height: 390px;
+    width: 265px;
+    height: 340px;
     top:0;
     left:0;
-    display: none;
+    display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     border-radius: inherit;
     background-color: rgba(41, 41, 41, 0.5);
     position: absolute;
-    padding: 0 50px;
+    padding: 0 35px;
+    opacity: 0;
+    transition: all .2s ease-in-out;
 }
 
 .card:hover .overlay{
-    display: flex;
+    opacity: 1;
 }
