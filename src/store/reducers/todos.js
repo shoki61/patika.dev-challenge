@@ -45,6 +45,11 @@ const reducer = (state = initialState, action) => {
                 todos: newCopiedTodos
             };
 
+        case actionTypes.SAVE_UPDATED_TODOS:
+            return{
+                ...state,
+                todos: action.todos
+            }    
         default: return state;
     };
 };

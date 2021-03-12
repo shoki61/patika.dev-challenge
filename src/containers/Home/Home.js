@@ -15,6 +15,7 @@ import './Home.css';
 const Home = props => {
     const history = useHistory();
     const [ user, setUser ] = useState();
+    const [ todos, setTodos ] = useState(props.todos);
     const [ todoItem, setTodoItem ] = useState({name: '', status: false});
     const [ newTodo, setNewTodo ] = useState(false);
     const [ category, setCategory ] = useState(true);
@@ -34,7 +35,8 @@ const Home = props => {
         };
         setUser(user);
         setCategories(props.categories);
-    }, [props.categories, categories]);
+        setTodos(props.todos);
+    }, [props.todos, props.categories, categories]);
 
 
     const clearData = () => {
@@ -137,8 +139,21 @@ const Home = props => {
         setCategories(updatedCategories);
     };
 
+    const updateTodoHandler = (event, id, index, itemIndex) => {
+        const updateTodos = [...todos];
+        if(event.target.id === 'title'){
+            updateTodos[index][event.target.id] = event.target.value;
+        }else{
+            updateTodos[index][event.target.id][itemIndex].status = !updateTodos[index][event.target.id][itemIndex].status;
+        };
+        setTodos(updateTodos);
+    };
 
-    const renderTodos = item => {
+    const saveUpdatedTodos = () => {
+        props.onSaveUpdatedTodos(todos);
+    };
+
+    const renderTodos = (item, index) => {
         const isSelectedCategory = categories.filter(ctgs => ctgs.isSelected === true);
         if(isSelectedCategory.length > 0){
             let filteredTodos;
@@ -146,12 +161,15 @@ const Home = props => {
                 if(ctg.name === item.category){
                     filteredTodos = <TodoList
                         id={item.id}
+                        index={index}
                         key={item.id}
                         delete={() => deleteTodo(item.id)}
                         copy={() => copy(item.id)}
                         title={item.title}
                         items={item.items}
                         category={item.category}
+                        updateTodo={updateTodoHandler}
+                        saveUpdateTodos={saveUpdatedTodos}
                     />;
                 };
             });
@@ -160,11 +178,14 @@ const Home = props => {
             return <TodoList
                 id={item.id}
                 key={item.id}
+                index={index}
                 delete={() => deleteTodo(item.id)}
                 copy={() => copy(item.id)}
                 title={item.title}
                 items={item.items}
                 category={item.category}
+                updateTodo={updateTodoHandler}
+                saveUpdateTodos={saveUpdatedTodos}
             />;
         };
     };
@@ -188,7 +209,7 @@ const Home = props => {
             </div>
         </div>
         <div className='home-right'>
-            {props.todos.length > 0 && props.todos.map(item => renderTodos(item))}
+            {todos.length > 0 && todos.map((item, index) => renderTodos(item, index))}
 
             {
                 newTodo && <Card className='mr-2 mb-2'>
@@ -256,6 +277,9 @@ const Home = props => {
     </div>
 };
 
+
+
+
 const mapStateToProps = state => {
     return {
         todos: state.todoReducer.todos,
@@ -267,7 +291,8 @@ const mapDispatchToProps = dispatch => {
     return {
         onAddTodo: todo => dispatch(actions.addTodo(todo)),
         onDeleteTodo: id => dispatch(actions.deleteTodo(id)),
-        onCopy: id => dispatch(actions.copyTodo(id))
+        onCopy: id => dispatch(actions.copyTodo(id)),
+        onSaveUpdatedTodos: todos => dispatch(actions.saveUpdatedTodos(todos))
     };
 };
 

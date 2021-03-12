@@ -3,6 +3,8 @@
     font-weight: 700;
     color: #414141;
     text-align: center;
+    border:none;
+    border-radius: 0;
     border-bottom: 2px solid #b3b3b3;
     padding-bottom: 3px;
 }

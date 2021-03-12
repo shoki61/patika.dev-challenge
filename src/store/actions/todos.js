@@ -27,3 +27,10 @@ export const copyTodo = id => {
         id
     };
 };
+
+export const saveUpdatedTodos = todos => {
+    return{
+        type: actionTypes.SAVE_UPDATED_TODOS,
+        todos
+    }
+};
