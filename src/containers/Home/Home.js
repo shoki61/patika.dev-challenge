@@ -36,7 +36,7 @@ const Home = props => {
         setUser(user);
         setCategories(props.categories);
         setTodos(props.todos);
-    }, [props.todos, props.categories, categories]);
+    }, [props.todos, props.categories, categories, history]);
 
 
     const clearData = () => {
@@ -49,7 +49,6 @@ const Home = props => {
         });
         setTodoItem({name: '', status: false});
     }
-
 
     const addTodo = () => {
         props.onAddTodo(todo);
@@ -110,7 +109,7 @@ const Home = props => {
     };
 
     const removeItem = i => {
-        const updateItems = todo.items.filter((item, index) => index !== i);
+        const updateItems = todo.items.filter((_, index) => index !== i);
         setTodo(prevState => {
             return {
                 ...prevState,
@@ -118,17 +117,8 @@ const Home = props => {
             };
         });
     };
-    
 
-    const deleteTodo = id => {
-        props.onDeleteTodo(id);
-    };
-
-    const copy = id => {
-        props.onCopy(id);
-    };
-
-    const getFilteredTodos = (event ,value) => {
+    const getFilteredTodos = value => {
         const updatedCategories = categories.map(item => {
             if(item.name === value){
                 item.isSelected = !item.isSelected
@@ -139,7 +129,7 @@ const Home = props => {
         setCategories(updatedCategories);
     };
 
-    const updateTodoHandler = (event, id, index, itemIndex) => {
+    const updateTodoHandler = (event, index, itemIndex) => {
         const updateTodos = [...todos];
         if(event.target.id === 'title'){
             updateTodos[index][event.target.id] = event.target.value;
@@ -147,10 +137,6 @@ const Home = props => {
             updateTodos[index][event.target.id][itemIndex].status = !updateTodos[index][event.target.id][itemIndex].status;
         };
         setTodos(updateTodos);
-    };
-
-    const saveUpdatedTodos = () => {
-        props.onSaveUpdatedTodos(todos);
     };
 
     const renderTodos = (item, index) => {
@@ -163,13 +149,13 @@ const Home = props => {
                         id={item.id}
                         index={index}
                         key={item.id}
-                        delete={() => deleteTodo(item.id)}
-                        copy={() => copy(item.id)}
+                        delete={() => props.onDeleteTodo(item.id)}
+                        copy={() =>  props.onCopy(item.id)}
                         title={item.title}
                         items={item.items}
                         category={item.category}
                         updateTodo={updateTodoHandler}
-                        saveUpdateTodos={saveUpdatedTodos}
+                        saveUpdateTodos={() => props.onSaveUpdatedTodos(todos)}
                     />;
                 };
             });
@@ -179,13 +165,13 @@ const Home = props => {
                 id={item.id}
                 key={item.id}
                 index={index}
-                delete={() => deleteTodo(item.id)}
-                copy={() => copy(item.id)}
+                delete={() => props.onDeleteTodo(item.id)}
+                copy={() =>  props.onCopy(item.id)}
                 title={item.title}
                 items={item.items}
                 category={item.category}
                 updateTodo={updateTodoHandler}
-                saveUpdateTodos={saveUpdatedTodos}
+                saveUpdateTodos={() => props.onSaveUpdatedTodos(todos)}
             />;
         };
     };
@@ -197,7 +183,7 @@ const Home = props => {
                 {
                     categories.map((item, index) => <p key={index} className='mt-1'>
                         <Input 
-                            onChange={(event) => getFilteredTodos(event, item.name)} 
+                            onChange={() => getFilteredTodos(item.name)} 
                             checked={item.isSelected} 
                             value={item.isSelected}  
                             label={item.name} 
@@ -250,7 +236,6 @@ const Home = props => {
                                 <div style={{display:'flex', alignItems:'center'}}>
                                     <Input 
                                         label={item.name} 
-                                        checked={item.status} 
                                         element='checkbox' 
                                         type='checkbox'
                                         id='status'

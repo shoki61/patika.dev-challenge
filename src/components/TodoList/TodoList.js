@@ -17,7 +17,7 @@ const TodoList = props => {
                     {isUpdate ? <Input 
                         element='input'
                         id='title' 
-                        onChange={(event) => props.updateTodo(event, props.id, props.index)}
+                        onChange={(event) => props.updateTodo(event, props.index)}
                         className='todo-title mb-2 full-width' 
                         value={props.title}
                     /> : 
@@ -28,7 +28,7 @@ const TodoList = props => {
                         { props.items.map((item, index)=> <div key={index} className='todo-item-container mb-1'>
                             <div style={{display:'flex', alignItems:'center'}}>
                                 <Input 
-                                    onChange={(event) => props.updateTodo(event, props.id, props.index, index)}
+                                    onChange={(event) => props.updateTodo(event, props.index, index)}
                                     label={item.name} 
                                     value={item.status} 
                                     checked={item.status} 

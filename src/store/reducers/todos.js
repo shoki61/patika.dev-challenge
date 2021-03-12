@@ -11,6 +11,9 @@ const reducer = (state = initialState, action) => {
     switch(action.type){
         case actionTypes.ADD_TODO:
             const newTodos = [...state.todos];
+            if(!action.todo.title){
+                action.todo.title = 'Nameless todo'
+            }
             newTodos.unshift(action.todo);
             const newCategories = [...state.categories];
             const categoryNames = newCategories.map(item => item.name);
